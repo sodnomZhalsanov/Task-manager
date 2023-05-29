@@ -17,7 +17,6 @@ class Task
         'created_at',
         'completed_at',
         'deadline',
-        'user_id',
         'category_id',
         'color',
         'is_done'

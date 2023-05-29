@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use Faker\Factory;
 use Illuminate\Support\Facades\View;
 
@@ -12,9 +13,18 @@ class DashboardController extends Controller
         return view('dashboard');
     }
 
-    public function addTask()
+    public function addTask(TaskRequest $request)
+    {
+
+
+    }
+
+    public function deleteTask()
     {
 
     }
+
+
+
 
 }
