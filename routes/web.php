@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\CustomAuthController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('dashboard', [CustomAuthController::class, 'dashboard'])->middleware('auth')->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'getDashboard'])->middleware('auth')->name('dashboard');
 Route::get('signin', [CustomAuthController::class, 'signIn'])->middleware('guest')->name('signin');
 Route::get('signup', [CustomAuthController::class, 'signUp'])->middleware('guest')->name('signup');
 

@@ -1,4 +1,8 @@
+@extends('layout')
+
+@section('content')
 <form action="{{ route('signin') }}" method="post">
+    @csrf
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -12,5 +16,9 @@
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Check me out</label>
     </div>
+    @error('email')
+    <span class='label-text'>{{ $message }}</span>
+    @enderror
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+@endsection
