@@ -19,10 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('dashboard', [DashboardController::class, 'getDashboard'])->middleware('auth')->name('dashboard');
-Route::get('signin', [CustomAuthController::class, 'signIn'])->middleware('guest')->name('signin');
-Route::get('signup', [CustomAuthController::class, 'signUp'])->middleware('guest')->name('signup');
+Route::get('signin', [CustomAuthController::class, 'signIn'])->name('signin');
+Route::get('signup', [CustomAuthController::class, 'signUp'])->name('signup');
 
 
-Route::post('signin', [CustomAuthController::class, 'signInPost'])->middleware('guest');
-Route::post('signup', [CustomAuthController::class, 'signUpPost'])->middleware('guest');
+Route::post('signin', [CustomAuthController::class, 'signInPost']);
+Route::post('signup', [CustomAuthController::class, 'signUpPost']);
 
