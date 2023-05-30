@@ -14,12 +14,17 @@ return new class extends Migration
     protected $connection = 'pgsql';
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        //
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('title');
+            $table->longText('description');
+            $table->string('color');
+            $table->date('started_at');
+            $table->date('completed_at');
+            $table->date('deadline');
+            $table->integer('importance');
+            $table->boolean('is_done');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,6 +37,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        //
+        Schema::dropIfExists('tasks');
     }
 };

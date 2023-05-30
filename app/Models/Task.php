@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class Task
+class Task extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
+
+    protected $attributes = [
+        'is_done' => false,
+        'completed_at' => null
+    ];
 
     protected $fillable = [
         'title',
         'description',
-        'created_at',
-        'completed_at',
+        'started_at',
         'deadline',
-        'category_id',
-        'color',
-        'is_done'
+        'importance',
+        'color'
     ];
-
 }

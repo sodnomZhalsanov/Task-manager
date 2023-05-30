@@ -36,8 +36,8 @@ class SignInRequest extends FormRequest
     public function attributes()
     {
         return [
-            "email" => "\"Емейл\"",
-            "password" => "\"Пароль\""
+            "email" => "\"Email\"",
+            "password" => "\"Password\""
         ];
     }
 

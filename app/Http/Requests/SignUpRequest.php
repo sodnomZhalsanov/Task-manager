@@ -38,10 +38,10 @@ class SignUpRequest extends FormRequest
     public function attributes()
     {
         return [
-            "lastname" => "\"Фамилия\"",
-            'firstname' => "\"Имя\"",
-            "email" => "\"Емейл\"",
-            "password" => "\"Пароль\""
+            "lastname" => "\"Last Name\"",
+            'firstname' => "\"First Name\"",
+            "email" => "\"Email\"",
+            "password" => "\"Password\""
         ];
     }
 
