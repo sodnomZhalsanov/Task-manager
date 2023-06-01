@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('title');
             $table->longText('description');
             $table->string('color');
-            $table->date('started_at');
             $table->date('completed_at');
             $table->date('deadline');
             $table->integer('importance');

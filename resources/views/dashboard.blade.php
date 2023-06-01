@@ -31,6 +31,7 @@
     </div>
     <div class="container-fluid">
         <form action="{{ route('dashboard') }}" method="post">
+            @csrf
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Title</label>
                 <input type="text" name="title" class="form-control" id="exampleInputEmail1">
@@ -49,20 +50,26 @@
                 <label for="exampleInputPassword1" class="form-label">Deadline</label>
                 <input type="date" name="deadline" class="form-control" id="exampleInputPassword1">
             </div>
+            @error('deadline')
+            <span class='label-text'>{{ $message }}</span>
+            @enderror
 
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Color</label>
-                <input type="text" name="deadline" class="form-control" id="exampleInputPassword1">
+                <input type="text" name="color" class="form-control" id="exampleInputPassword1">
             </div>
+            @error('color')
+            <span class='label-text'>{{ $message }}</span>
+            @enderror
 
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Importance</label>
                 <input type="number" name="importance" class="form-control" id="exampleInputPassword1">
             </div>
+            @error('importance')
+            <span class='label-text'>{{ $message }}</span>
+            @enderror
 
-            <div class="mb-3">
-                <input type="hidden" name="started_at" class="form-control" id="exampleInputPassword1" value="@php( date('Y-m-d') )">
-            </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
 

@@ -16,8 +16,7 @@ class TaskRequest extends FormRequest
         return [
             'title' => 'required|string',
             'description' => 'required|string',
-            'started_at' => 'date',
-            'deadline' => 'date',
+            'deadline' => 'required',
             'importance' => 'required|numeric',
             'color' => 'required|string'
         ];
@@ -28,24 +27,18 @@ class TaskRequest extends FormRequest
         return [
             "required" => "Поле :attribute не должно быть пустым.",
             'string' => 'Поле :attribute должен быть строкой.',
-            'date' => 'Поле :attribute должен быть датой.',
-            'min' => [
-                'array' => 'The :attribute must have at least :min items.',
-                'file' => 'The :attribute must be at least :min kilobytes.',
-                'numeric' => 'The :attribute must be at least :min.',
-                'string' => 'Поле :attribute должно быть не короче :min символов.',
-            ]
+            'numeric' => 'Поле :attribute должен быть числом.'
+
         ];
     }
     public function attributes()
     {
         return [
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'started_at' => 'date',
-            'deadline' => 'date',
-            'importance' => 'required|numeric',
-            'color' => 'required|string'
+            'title' => "\"title\"",
+            'description' => "\"description\"",
+            'deadline' => "\"deadline\"",
+            'importance' => "\"importance\"",
+            'color' => "\"color\""
         ];
     }
 

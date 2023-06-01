@@ -11,13 +11,12 @@ class Task extends Model
 
     protected $attributes = [
         'is_done' => false,
-        'completed_at' => null
+        'completed_at' => '1976-01-01'
     ];
 
     protected $fillable = [
         'title',
         'description',
-        'started_at',
         'deadline',
         'importance',
         'color'

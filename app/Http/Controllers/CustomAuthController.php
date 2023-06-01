@@ -45,6 +45,8 @@ class CustomAuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
+
+
         Auth::login($user);
         return redirect()->route('signin');
     }
