@@ -18,7 +18,8 @@ class TaskRequest extends FormRequest
             'description' => 'required|string',
             'deadline' => 'required',
             'importance' => 'required|numeric',
-            'color' => 'required|string'
+            'color' => 'required|string',
+            'executor' => 'required|string'
         ];
     }
 
@@ -38,7 +39,8 @@ class TaskRequest extends FormRequest
             'description' => "\"description\"",
             'deadline' => "\"deadline\"",
             'importance' => "\"importance\"",
-            'color' => "\"color\""
+            'color' => "\"color\"",
+            'executor' => "\"executor\""
         ];
     }
 

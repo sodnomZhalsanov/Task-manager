@@ -1,36 +1,56 @@
 @extends('layout')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('Dashboard') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
 
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
     <div class="container-fluid">
-        @foreach($tasks as $task)
-            <div class="alert alert-info">
-                <h3>{{ $task->title }}</h3>
-            </div>
+        @foreach($taskUsers as $taskUser)
+            @foreach($tasks as $task)
+                @if($taskUser->task_id === $task->id)
+                    <div class="alert alert-info">
+
+                        <h3>{{ $task->title }}</h3>
+                        <h1>{{ $taskUser->getEmailById($taskUser->user_id) }}</h1>
+                    </div>
+                    <form method="post" action="{{ route('addCoworker') }}">
+                        <div class="mb-3">
+                            <input type="hidden" name="task_id" class="form-control" id="exampleInputPassword1" value="{{$task->id}}">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" name="executor" list="executors" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add executor</button>
+                        <datalist id="executors">
+                            @foreach($users as $user)
+                                <option value="{{$user->email}}">
+                            @endforeach
+                        </datalist>
+                    </form>
+                @endif
+            @endforeach
         @endforeach
 
 
     </div>
     <div class="container-fluid">
-        <form action="{{ route('dashboard') }}" method="post">
+        <form action="{{ route('addTask') }}" method="post">
             @csrf
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Title</label>
@@ -70,9 +90,22 @@
             <span class='label-text'>{{ $message }}</span>
             @enderror
 
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Add executor</label>
+                <input type="text" name="executor" list="executors" class="form-control" id="exampleInputPassword1">
+            </div>
+            @error('executor')
+            <span class='label-text'>{{ $message }}</span>
+            @enderror
+            <datalist id="executors">
+                @foreach($users as $user)
+                    <option value="{{$user->email}}">
+                @endforeach
+            </datalist>
 
             <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
     </div>
+
 @endsection

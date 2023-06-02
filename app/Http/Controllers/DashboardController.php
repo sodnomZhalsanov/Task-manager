@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddCoworkerRequest;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use App\Models\TaskUser;
@@ -14,24 +15,11 @@ class DashboardController extends Controller
 {
     public function getDashboard()
     {
-        $user = Auth::id();
-
-        print_r($user);
-
-        $taskUsers = TaskUser::where('user_id', $user)->get();
-
-        $tasks = Task::all();
-        $arr = [];
-        foreach ($taskUsers as $el){
-            foreach ($tasks as $task){
-                if ($task->id === $el->task_id){
-                    $arr[] = $task;
-                }
-            }
-        }
 
         $params = [
-            'tasks' => $arr
+            'tasks' => Task::all(),
+            'users' => User::all(),
+            'taskUsers' => TaskUser::all()
         ];
         return view('dashboard', $params);
     }
@@ -47,12 +35,12 @@ class DashboardController extends Controller
             'color'=> $request->color
         ]);
 
-        $user = Auth::id();
-        print_r($user);
+        $user = User::where('email',$request->executor)->first();
 
-        TaskUser::create([
-            'user_id' => $user,
-            'task_id' => $task->id
+
+        $taskUser = TaskUser::create([
+            'task_id' => $task->id,
+            'user_id' => $user->id
         ]);
 
 
@@ -67,9 +55,18 @@ class DashboardController extends Controller
 
     }
 
-    public function addCoworker()
+    public function addCoworker(addCoworkerRequest $request)
     {
+        print_r($request->task_id);
+        print_r($request->executor);
+        echo "test"; die;
+        $task_id = $request->task_id;
+        $user = User::where('email',$request->executor)->first();
 
+        $taskUser = TaskUser::create([
+            'task_id' => $task_id,
+            'user_id' => $user->id
+        ]);
 
     }
 

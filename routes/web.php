@@ -25,5 +25,6 @@ Route::get('signup', [CustomAuthController::class, 'signUp'])->name('signup');
 
 Route::post('signin', [CustomAuthController::class, 'signInPost']);
 Route::post('signup', [CustomAuthController::class, 'signUpPost']);
-Route::post('dashboard', [DashboardController::class, 'addTask']);
+Route::post('addTask', [DashboardController::class, 'addTask'])->name('addTask');;
+Route::post('addCoworker', [DashboardController::class, 'addCoworker'])->name('addCoworker');;
 
