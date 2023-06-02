@@ -29,20 +29,30 @@
                         <h3>{{ $task->title }}</h3>
                         <h1>{{ $taskUser->getEmailById($taskUser->user_id) }}</h1>
                     </div>
-                    <form method="post" action="{{ route('addCoworker') }}">
+                    <form method="post" action="{{ route('addCoworker') }}" id="{{$task->id}}">
+                        @csrf
                         <div class="mb-3">
                             <input type="hidden" name="task_id" class="form-control" id="exampleInputPassword1" value="{{$task->id}}">
                         </div>
+                        @error('task_id')
+                        <span class='label-text'>{{ $message }}</span>
+                        @enderror
                         <div class="mb-3">
-                            <input type="text" name="executor" list="executors" class="form-control" id="exampleInputPassword1">
+                            <input type="text" name="executor_mail" list="executors_1" class="form-control" id="exampleInputPassword1">
                         </div>
-                        <button type="submit" class="btn btn-primary">Add executor</button>
-                        <datalist id="executors">
+                        <datalist id="executors_1">
                             @foreach($users as $user)
                                 <option value="{{$user->email}}">
                             @endforeach
                         </datalist>
+                        @error('executor_mail')
+                        <span class='label-text'>{{ $message }}</span>
+                        @enderror
+
+
                     </form>
+                    <button type="submit" form="{{$task->id}}" class="btn btn-primary">Add executor</button>
+
                 @endif
             @endforeach
         @endforeach

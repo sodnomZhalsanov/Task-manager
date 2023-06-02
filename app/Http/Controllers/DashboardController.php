@@ -58,15 +58,19 @@ class DashboardController extends Controller
     public function addCoworker(addCoworkerRequest $request)
     {
         print_r($request->task_id);
-        print_r($request->executor);
-        echo "test"; die;
+        print_r($request->executor_email);
+        echo 'test';
+        die;
+
         $task_id = $request->task_id;
-        $user = User::where('email',$request->executor)->first();
+        $user = User::where('email',$request->executor_mail)->first();
 
         $taskUser = TaskUser::create([
             'task_id' => $task_id,
             'user_id' => $user->id
         ]);
+
+        return redirect()->route('dashboard');
 
     }
 

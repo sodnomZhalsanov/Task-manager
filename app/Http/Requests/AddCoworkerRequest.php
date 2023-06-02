@@ -25,7 +25,8 @@ class AddCoworkerRequest extends FormRequest
     {
         return [
             //
-            'executor' => 'required|string'
+            'task_id.' => 'required',
+            'executor_mail' => 'required|string'
         ];
     }
 
@@ -41,7 +42,8 @@ class AddCoworkerRequest extends FormRequest
     public function attributes()
     {
         return [
-            'executor' => "\"executor\""
+            'task_id' => "\"task_id\"",
+            'executor_mail' => "\"executor_mail\""
         ];
     }
 }
