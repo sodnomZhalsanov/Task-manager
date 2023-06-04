@@ -15,11 +15,17 @@ class DashboardController extends Controller
 {
     public function getDashboard()
     {
+        $tasks = Task::all();
+        $arr = [];
+
+        foreach ($tasks as $task){
+            $arr[] = TaskUser::where('task_id', $task->id)->get();
+        }
+
 
         $params = [
-            'tasks' => Task::all(),
             'users' => User::all(),
-            'taskUsers' => TaskUser::all()
+            'taskUsers' => $arr
         ];
         return view('dashboard', $params);
     }
@@ -57,10 +63,6 @@ class DashboardController extends Controller
 
     public function addCoworker(addCoworkerRequest $request)
     {
-        print_r($request->task_id);
-        print_r($request->executor_email);
-        echo 'test';
-        die;
 
         $task_id = $request->task_id;
         $user = User::where('email',$request->executor_mail)->first();

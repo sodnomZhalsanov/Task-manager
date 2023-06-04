@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -21,40 +22,44 @@
         </div>
     </div>
     <div class="container-fluid">
-        @foreach($taskUsers as $taskUser)
-            @foreach($tasks as $task)
-                @if($taskUser->task_id === $task->id)
-                    <div class="alert alert-info">
+        @foreach($taskUsers as $el)
 
-                        <h3>{{ $task->title }}</h3>
-                        <h1>{{ $taskUser->getEmailById($taskUser->user_id) }}</h1>
-                    </div>
-                    <form method="post" action="{{ route('addCoworker') }}" id="{{$task->id}}">
-                        @csrf
-                        <div class="mb-3">
-                            <input type="hidden" name="task_id" class="form-control" id="exampleInputPassword1" value="{{$task->id}}">
-                        </div>
-                        @error('task_id')
-                        <span class='label-text'>{{ $message }}</span>
-                        @enderror
-                        <div class="mb-3">
-                            <input type="text" name="executor_mail" list="executors_1" class="form-control" id="exampleInputPassword1">
-                        </div>
-                        <datalist id="executors_1">
-                            @foreach($users as $user)
-                                <option value="{{$user->email}}">
-                            @endforeach
-                        </datalist>
-                        @error('executor_mail')
-                        <span class='label-text'>{{ $message }}</span>
-                        @enderror
+            <div class="alert alert-info">
+                <h2>{{ ($el[0]->getTaskById($el[0]->task_id))->title }}</h2>
+                @foreach($el as $user_mail)
+                    <h1>{{ $user_mail->getEmailById($user_mail->user_id) }}</h1>
+                @endforeach
+            </div>
 
+            <form action="{{ route('addCoworker') }}" method="post"
+                  id="addto{{($el[0]->getTaskById($el[0]->task_id))->id}}">
+                @csrf
+                <div class="mb-3">
+                    <input type="hidden" name="task_id" class="form-control" id="exampleInputPassword1"
+                           value="{{($el[0]->getTaskById($el[0]->task_id))->id}}">
+                </div>
+                @error('task_id')
+                <span class='label-text'>{{ $message }}</span>
+                @enderror
+                <div class="mb-3">
+                    <input type="text" name="executor_mail"
+                           list="executors_{{($el[0]->getTaskById($el[0]->task_id))->id}}" class="form-control"
+                           id="exampleInputPassword1">
+                </div>
+                <datalist id="executors_{{($el[0]->getTaskById($el[0]->task_id))->id}}">
+                    @foreach($users as $user)
+                        <option value="{{$user->email}}">
+                    @endforeach
+                </datalist>
+                @error('executor_mail')
+                <span class='label-text'>{{ $message }}</span>
+                @enderror
+                <button type="submit" form="addto{{($el[0]->getTaskById($el[0]->task_id))->id}}"
+                        class="btn btn-primary">Add executor
+                </button>
 
-                    </form>
-                    <button type="submit" form="{{$task->id}}" class="btn btn-primary">Add executor</button>
+            </form>
 
-                @endif
-            @endforeach
         @endforeach
 
 
@@ -62,6 +67,7 @@
     <div class="container-fluid">
         <form action="{{ route('addTask') }}" method="post">
             @csrf
+
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Title</label>
                 <input type="text" name="title" class="form-control" id="exampleInputEmail1">

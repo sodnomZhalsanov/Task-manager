@@ -25,7 +25,7 @@ class AddCoworkerRequest extends FormRequest
     {
         return [
             //
-            'task_id.' => 'required',
+            'task_id' => 'required',
             'executor_mail' => 'required|string'
         ];
     }
