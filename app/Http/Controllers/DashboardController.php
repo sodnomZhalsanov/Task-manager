@@ -8,12 +8,14 @@ use App\Models\Task;
 use App\Models\TaskUser;
 use App\Models\User;
 use Faker\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Illuminate\Contracts\Foundation\Application;
 
 class DashboardController extends Controller
 {
-    public function getDashboard()
+    public function getDashboard(): Factory|View|Application
     {
         $tasks = Task::all();
         $arr = [];
@@ -30,7 +32,7 @@ class DashboardController extends Controller
         return view('dashboard', $params);
     }
 
-    public function addTask(TaskRequest $request)
+    public function addTask(TaskRequest $request): RedirectResponse
     {
 
         $task = Task::create([
@@ -61,7 +63,7 @@ class DashboardController extends Controller
 
     }
 
-    public function addCoworker(addCoworkerRequest $request)
+    public function addCoworker(addCoworkerRequest $request): RedirectResponse
     {
 
         $task_id = $request->task_id;

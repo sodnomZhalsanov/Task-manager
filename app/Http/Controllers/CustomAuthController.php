@@ -10,16 +10,20 @@ use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class CustomAuthController extends Controller
 {
     //
-    public function signIn()
+    public function signIn(): Factory|View|Application
     {
         return view('signin');
     }
 
-    public function signInPost(SignInRequest $request)
+    public function signInPost(SignInRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
@@ -31,12 +35,12 @@ class CustomAuthController extends Controller
         ]);
     }
 
-    public function signUp()
+    public function signUp(): Factory|View|Application
     {
         return view('signup');
     }
 
-    public function signUpPost(SignUpRequest $request)
+    public function signUpPost(SignUpRequest $request): RedirectResponse
     {
         $user = User::create([
             'firstname' => $request->firstname,

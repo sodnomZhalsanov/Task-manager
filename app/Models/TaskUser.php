@@ -16,13 +16,13 @@ class TaskUser extends Model
         'task_id'
     ];
 
-    public function getEmailById(int $user_id)
+    public function getEmailById(int $user_id): string
     {
         $user = User::where('id', $user_id)->first();
         return $user->email;
     }
 
-    public function getTaskById(int $task_id)
+    public function getTaskById(int $task_id): Task
     {
         $task = Task::where('id', $task_id)->first();
         return $task;
