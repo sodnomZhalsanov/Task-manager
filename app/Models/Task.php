@@ -21,4 +21,9 @@ class Task extends Model
         'importance',
         'color'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

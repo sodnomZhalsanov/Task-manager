@@ -15,40 +15,28 @@ use Illuminate\Contracts\Foundation\Application;
 
 class DashboardController extends Controller
 {
-    public function getDashboard(): Factory|View|Application
+    public function getDashboard()
     {
-        $tasks = Task::all();
-        $arr = [];
-
-        foreach ($tasks as $task){
-            $arr[] = TaskUser::where('task_id', $task->id)->get();
-        }
-
+        $user = Auth::user();
+        $tasks = $user->tasks()->get();
 
         $params = [
-            'users' => User::all(),
-            'taskUsers' => $arr
+            'tasks' =>  $tasks,
+            'user' => $user
         ];
+
         return view('dashboard', $params);
     }
 
     public function addTask(TaskRequest $request): RedirectResponse
     {
 
-        $task = Task::create([
-            'title' => $request->title,
-            'description'=> $request->description,
-            'deadline'=> $request->deadline,
-            'importance'=> $request->importance,
-            'color'=> $request->color
-        ]);
-
-        $user = User::where('email',$request->executor)->first();
+        $task = Task::create($request->all());
 
 
         $taskUser = TaskUser::create([
             'task_id' => $task->id,
-            'user_id' => $user->id
+            'user_id' => Auth::id()
         ]);
 
 
@@ -58,25 +46,26 @@ class DashboardController extends Controller
 
     }
 
-    public function deleteTask()
+    public function completeTask()
     {
+
 
     }
 
-    public function addCoworker(addCoworkerRequest $request): RedirectResponse
-    {
-
-        $task_id = $request->task_id;
-        $user = User::where('email',$request->executor_mail)->first();
-
-        $taskUser = TaskUser::create([
-            'task_id' => $task_id,
-            'user_id' => $user->id
-        ]);
-
-        return redirect()->route('dashboard');
-
-    }
+//    public function addCoworker(addCoworkerRequest $request): RedirectResponse
+//    {
+//
+//        $task_id = $request->task_id;
+//        $user = User::where('email',$request->executor_mail)->first();
+//
+//        $taskUser = TaskUser::create([
+//            'task_id' => $task_id,
+//            'user_id' => $user->id
+//        ]);
+//
+//        return redirect()->route('dashboard');
+//
+//    }
 
 
 
