@@ -46,9 +46,9 @@ class DashboardController extends Controller
 
     }
 
-    public function completeTask()
+    public function completeTask($request)
     {
-
+        Task::where('id',$request->id)->update(['is_done' => true]);
 
     }
 
