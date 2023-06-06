@@ -15,7 +15,11 @@
                             <h1>Deadline: {{$task->deadline}} </h1>
                             <h1>Executor: {{$user->firstname}} </h1>
                             <h1>Level of urgency: {{$task->importance}}</h1>
-                            <button type="submit">Complete Task</button>
+                            <form method="post" action="{{ route('completeTask')  }}" id="{{ $task->id }}toComplete">
+                                @csrf
+                                <input type="hidden" name="id" value="{{$task->id}}">
+                            </form>
+                            <button type="submit" form="{{ $task->id }}toComplete">Complete Task</button>
                         </div>
                     </div>
 

@@ -18,13 +18,17 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('dashboard', [DashboardController::class, 'getDashboard'])->middleware('auth')->name('dashboard');
+
 Route::get('signin', [CustomAuthController::class, 'signIn'])->name('signin');
 Route::get('signup', [CustomAuthController::class, 'signUp'])->name('signup');
-
-
 Route::post('signin', [CustomAuthController::class, 'signInPost']);
 Route::post('signup', [CustomAuthController::class, 'signUpPost']);
+
+
+
+Route::get('dashboard', [DashboardController::class, 'getDashboard'])->middleware('auth')->name('dashboard');
 Route::post('addTask', [DashboardController::class, 'addTask'])->name('addTask');
 Route::post('addCoworker', [DashboardController::class, 'addCoworker'])->name('addCoworker');
 
+Route::get('completeTask', [DashboardController::class, 'getCompletedTasks'])->name('completeTask');
+Route::post('completeTask', [DashboardController::class, 'completeTask']);
