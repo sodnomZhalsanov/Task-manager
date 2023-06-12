@@ -16,7 +16,7 @@ class RabbitMQService
         $channel->exchange_declare('test_exchange', 'direct', false, false, false);
         $channel->queue_declare('test_queue', false, false, false, false);
         $channel->queue_bind('test_queue', 'test_exchange', 'test_key');
-        $msg = new AMQPMessage($message['user_id']);
+        $msg = new AMQPMessage($message);
         $channel->basic_publish($msg, 'test_exchange', 'test_key');
         echo " [x] Sent to test_exchange / test_queue.\n";
         $channel->close();
@@ -29,7 +29,7 @@ class RabbitMQService
         $callback = function ($msg) {
             $user = User::findOrFail($msg->body);
             event(new Registered($user));
-            echo ' [x] Received ', $msg->body, "\n";
+            echo ' [x] Received ', $user->email, "\n";
         };
         $channel->queue_declare('test_queue', false, false, false, false);
         $channel->basic_consume('test_queue', '', false, true, false, false, $callback);
