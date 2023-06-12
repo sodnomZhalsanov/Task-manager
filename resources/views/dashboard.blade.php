@@ -28,6 +28,9 @@
         </div>
 
     </div>
+    <div>
+        <a href="{{route('completeTask')}}" class="button">Completed tasks</a>
+    </div>
     <div class="container-fluid" style="margin-top: 30px">
         <form action="{{ route('addTask') }}" method="post">
             @csrf

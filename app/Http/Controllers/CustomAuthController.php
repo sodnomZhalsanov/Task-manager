@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SignInRequest;
 use App\Http\Requests\SignUpRequest;
 use App\Providers\RouteServiceProvider;
+use App\Services\RabbitMQService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
@@ -18,6 +20,11 @@ use Illuminate\Http\RedirectResponse;
 class CustomAuthController extends Controller
 {
     //
+    protected RabbitMQService $MQService;
+    public function __construct(RabbitMQService $MQService)
+    {
+       $this->MQService = $MQService;
+    }
     public function signIn(): Factory|View|Application
     {
         return view('signin');
@@ -49,7 +56,11 @@ class CustomAuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
+        $message = [
+            'user_id' => $user->id,
+        ];
 
+        $this->MQService->publish($message);
 
         Auth::login($user);
         return redirect()->route('signin');
