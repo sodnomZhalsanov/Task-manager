@@ -56,7 +56,7 @@ class CustomAuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        $this->MQService->publish($user->id);
+        $this->MQService->publish($user->id, 'email');
 
         Auth::login($user);
         return redirect()->route('signin');

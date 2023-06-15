@@ -2,32 +2,33 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\RabbitMQService;
-class MQConsumerCommand extends Command
+use Illuminate\Console\Command;
+
+class InviteMQConsumerCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'mq:email';
+    protected $signature = 'mq:invite';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Consume the mq email';
+    protected $description = 'Consume the mq invite';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle(): void
+    public function handle()
     {
         $mqService = new RabbitMQService();
-        $mqService->consume('email');
+        $mqService->consume('invite');
     }
 }

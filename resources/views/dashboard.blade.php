@@ -4,7 +4,7 @@
 
     <div class="container" style="margin-top: 30px">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-8" id="tasks">
                 @foreach($tasks as $task)
                     <div class="card" style="margin-top: 20px; background-color: {{$task->color}}">
                         <div class="card-header">
@@ -32,7 +32,7 @@
         <a href="{{route('completeTask')}}" class="button">Completed tasks</a>
     </div>
     <div class="container-fluid" style="margin-top: 30px">
-        <form action="{{ route('addTask') }}" method="post">
+        <form id="addTask" action="{{route('addTask')}}" method="post">
             @csrf
 
             <div class="mb-3">
@@ -59,7 +59,7 @@
 
             <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Color</label>
-                <input type="color" name="color" value = "#ffffff" class="form-control" id="exampleInputPassword1">
+                <input type="color" name="color" value="#ffffff" class="form-control" id="exampleInputPassword1">
             </div>
             @error('color')
             <span class='label-text'>{{ $message }}</span>
@@ -78,5 +78,29 @@
 
         </form>
     </div>
+    <script>
+        $(document).ready(function () {
+            $('#addTask').submit(function (e) {
+
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        $('#addTask')[0].reset();
+
+                        var jsonData = JSON.parse(data);
+
+                        if (jsonData.success !== "1") {
+                            alert('Invalid Form Data!');
+                        }
+
+
+                    }
+                });
+            });
+        });
+    </script>
 
 @endsection
