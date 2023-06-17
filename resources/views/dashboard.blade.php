@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container" style="margin-top: 30px">
+    <div class="container" style="margin-top: 30px" id="tasks">
         <div class="row justify-content-center">
             <div class="col-lg-8" id="tasks">
                 @foreach($tasks as $task)
@@ -15,10 +15,23 @@
                             <h1>Deadline: {{$task->deadline}} </h1>
                             <h1>Executor: {{$user->firstname}} </h1>
                             <h1>Level of urgency: {{$task->importance}}</h1>
+
+                            <form method="post" action="{{ route('addCoworker')  }}" id="{{ $task->id }}toAdd">
+                                @csrf
+                                <label for="exampleInput" class="form-label">Executor`s Email</label>
+                                <input type="text" name="executor_mail" id="exampleInput">
+                                @error('executor_mail')
+                                <span class='label-text'>{{ $message }}</span>
+                                @enderror
+                                <input type="hidden" name="task_id" value="{{$task->id}}">
+                            </form>
+                            <button type="submit" form="{{ $task->id }}toAdd">Add executor</button>
+
                             <form method="post" action="{{ route('completeTask')  }}" id="{{ $task->id }}toComplete">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$task->id}}">
                             </form>
+
                             <button type="submit" form="{{ $task->id }}toComplete">Complete Task</button>
                         </div>
                     </div>
@@ -88,13 +101,17 @@
                     url: $(this).attr('action'),
                     data: $(this).serialize(),
                     success: function (data) {
-                        $('#addTask')[0].reset();
+                        location.reload();
+                        //
+                        //var jsonData = JSON.parse(data);
 
-                        var jsonData = JSON.parse(data);
+                        //$('#tasks').append("<div>" + jsonData.data.title + "</div>")
+                        //
+                        // if (jsonData.success !== "1") {
+                        //     alert('Invalid Form Data!');
+                        // }
 
-                        if (jsonData.success !== "1") {
-                            alert('Invalid Form Data!');
-                        }
+
 
 
                     }
