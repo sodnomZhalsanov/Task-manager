@@ -17,6 +17,7 @@ class InviteConsumer implements ConsumerInterface
         Mail::send('email.invite', ['email' =>  $email], function ($message) use ($email)
         {
             $message->from('hello@example.com', 'Your Name');
+            $message->subject('Invitation to join a team');
             $message->to($email);
         });
 
