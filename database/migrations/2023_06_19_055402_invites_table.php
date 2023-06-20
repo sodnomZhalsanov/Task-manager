@@ -16,7 +16,13 @@ return new class extends Migration
         //
         Schema::create('invites', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('email');
+            $table->integer('owner_id');
+            $table->integer('user_id');
+            $table->integer('task_id');
+            $table->foreign('task_id')
+                ->references('id')->on('tasks')
+                ->onDelete('cascade');
+            $table->boolean('is_accepted');
             $table->string('token', 16)->unique();
             $table->timestamps();
         });

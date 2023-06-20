@@ -49,6 +49,6 @@ Route::middleware('auth')->group(function ()
 
 });
 
-Route::get('accept/{token}', [\App\Http\Controllers\InvitationController::class, 'accept'])->name('accept');
+Route::get('accept/{token}', [DashboardController::class, 'accept'])->name('accept');
 
 

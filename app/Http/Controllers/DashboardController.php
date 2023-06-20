@@ -89,18 +89,21 @@ class DashboardController extends Controller
 
         do {
             //generate a random string using Laravel's str_random helper
-            $token = Str::random(8);
+            $token = Str::random(16);
         } //check if the token already exists and if it does, try again
         while (Invite::where('token', $token)->first());
 
         //create a new invite record
         $invite = Invite::create([
-            'email' => $request->executor_mail,
+            'owner_id' => Auth::id(),
+            'user_id' => $user->id,
             'task_id' => $task_id,
             'token' => $token
         ]);
 
-        $this->MQService->publish($user->email, 'invite');
+        $message = $user->email.",".$invite->token;
+
+        $this->MQService->publish($message, 'invite');
 
         return redirect()->route('dashboard');
 
@@ -113,12 +116,14 @@ class DashboardController extends Controller
             abort(404);
         }
 
-        $user = User::where('email', $invite->email)->first();
+        $invite->update(['is_accepted' => true ]);
 
         TaskUser::create([
             'task_id' => $invite->task_id,
-            'user_id' => $user->id
+            'user_id' => $invite->user_id
         ]);
+
+        return redirect()->route('dashboard');
 
     }
 //    public function addCoworker(addCoworkerRequest $request): RedirectResponse

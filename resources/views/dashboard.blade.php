@@ -15,6 +15,11 @@
                             <h1>Deadline: {{$task->deadline}} </h1>
                             <h1>Executor: {{$user->firstname}} </h1>
                             <h1>Level of urgency: {{$task->importance}}</h1>
+                            <ul>
+                                @foreach($task->users()->get() as $executor)
+                                    <li>{{ $executor->email }} </li>
+                                @endforeach
+                            </ul>
 
                             <form method="post" action="{{ route('addCoworker')  }}" id="{{ $task->id }}toAdd">
                                 @csrf
