@@ -57,7 +57,7 @@
 @yield('content')
 <!-- END -->
 
-<footer class="text-center text-white" style="background-color: #f1f1f1;">
+<footer class="text-center text-white" style="background-color: #f1f1f1; ">
     <!-- Grid container -->
     <div class="container pt-4">
         <!-- Section: Social media -->

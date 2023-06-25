@@ -1,6 +1,13 @@
 @extends('layout')
 
 @section('content')
+    <div class="container-fluid">
+        <p>Добро пожаловать <b>{{ Auth::user()->firstname }}</b></p>
+        <form id="logout-form" action="{{ route('signOut') }}" method="POST">
+            @csrf
+            <button type="submit" form="logout-form" class="btn btn-danger">Выйти</button>
+        </form>
+    </div>
 
     <div class="container" style="margin-top: 30px" id="tasks">
         <div class="row justify-content-center">
@@ -24,7 +31,12 @@
                             <form method="post" action="{{ route('addCoworker')  }}" id="{{ $task->id }}toAdd">
                                 @csrf
                                 <label for="exampleInput" class="form-label">Executor`s Email</label>
-                                <input type="text" name="executor_mail" id="exampleInput">
+                                <input type="text" list="datalistOptions" name="executor_mail" id="exampleInput" placeholder="Type to search...">
+                                <datalist id="datalistOptions">
+                                    @foreach($users as $option)
+                                        <option value="{{ $option->email }}"></option>
+                                    @endforeach
+                                </datalist>
                                 @error('executor_mail')
                                 <span class='label-text'>{{ $message }}</span>
                                 @enderror
@@ -107,18 +119,6 @@
                     data: $(this).serialize(),
                     success: function (data) {
                         location.reload();
-                        //
-                        //var jsonData = JSON.parse(data);
-
-                        //$('#tasks').append("<div>" + jsonData.data.title + "</div>")
-                        //
-                        // if (jsonData.success !== "1") {
-                        //     alert('Invalid Form Data!');
-                        // }
-
-
-
-
                     }
                 });
             });

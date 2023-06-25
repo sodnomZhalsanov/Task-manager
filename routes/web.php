@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ Route::get('signin', [CustomAuthController::class, 'signIn'])->name('signin');
 Route::get('signup', [CustomAuthController::class, 'signUp'])->name('signup');
 Route::post('signin', [CustomAuthController::class, 'signInPost']);
 Route::post('signup', [CustomAuthController::class, 'signUpPost']);
-
+Route::post('signout', [CustomAuthController::class, 'signOut'])->name('signOut');
 
 Route::middleware('auth')->group(function ()
 {
@@ -42,13 +43,15 @@ Route::middleware('auth')->group(function ()
 
     Route::get('dashboard', [DashboardController::class, 'getDashboard'])->middleware('verified')->name('dashboard');
     Route::post('addTask', [DashboardController::class, 'addTask'])->name('addTask');
-    Route::post('addCoworker', [DashboardController::class, 'addCoworker'])->name('addCoworker');
 
     Route::get('completeTask', [DashboardController::class, 'getCompletedTasks'])->name('completeTask');
     Route::post('completeTask', [DashboardController::class, 'completeTask']);
 
+    Route::post('addCoworker', [InvitationController::class, 'addCoworker'])->name('addCoworker');
+    Route::get('accept/{token}', [InvitationController::class, 'accept'])->name('accept');
+
 });
 
-Route::get('accept/{token}', [DashboardController::class, 'accept'])->name('accept');
+
 
 

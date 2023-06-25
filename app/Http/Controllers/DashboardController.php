@@ -19,18 +19,16 @@ use Illuminate\Contracts\Foundation\Application;
 
 class DashboardController extends Controller
 {
-    public function __construct(RabbitMQService $MQService)
-    {
-        $this->MQService = $MQService;
-    }
     public function getDashboard()
     {
         $user = Auth::user();
+        $users = User::query()->select('users.*')->whereNotIn('users.id',[Auth::id()])->get();
         $tasks = ($user->tasks())->where('is_done', false)->get();
 
         $params = [
             'tasks' =>  $tasks,
-            'user' => $user
+            'user' => $user,
+            'users' => $users
         ];
 
         return view('dashboard', $params);
@@ -74,72 +72,7 @@ class DashboardController extends Controller
         return view('completed', $params);
     }
 
-    public function addCoworker(AddCoworkerRequest $request): RedirectResponse
-    {
-        $task_id = $request->task_id;
 
-        $user = User::where('email',$request->executor_mail)->first();
-
-
-        if(!$user){
-            return back()->withInput()->withErrors([
-                'executor_mail'=> "Couldn't find a user by email"
-            ]);
-        }
-
-        do {
-            //generate a random string using Laravel's str_random helper
-            $token = Str::random(16);
-        } //check if the token already exists and if it does, try again
-        while (Invite::where('token', $token)->first());
-
-        //create a new invite record
-        $invite = Invite::create([
-            'owner_id' => Auth::id(),
-            'user_id' => $user->id,
-            'task_id' => $task_id,
-            'token' => $token
-        ]);
-
-        $message = $user->email.",".$invite->token;
-
-        $this->MQService->publish($message, 'invite');
-
-        return redirect()->route('dashboard');
-
-    }
-
-    public function accept($token)
-    {
-        if (!$invite = Invite::where('token', $token)->first()) {
-            //if the invite doesn't exist do something more graceful than this
-            abort(404);
-        }
-
-        $invite->update(['is_accepted' => true ]);
-
-        TaskUser::create([
-            'task_id' => $invite->task_id,
-            'user_id' => $invite->user_id
-        ]);
-
-        return redirect()->route('dashboard');
-
-    }
-//    public function addCoworker(addCoworkerRequest $request): RedirectResponse
-//    {
-//
-//        $task_id = $request->task_id;
-//        $user = User::where('email',$request->executor_mail)->first();
-//
-//        $taskUser = TaskUser::create([
-//            'task_id' => $task_id,
-//            'user_id' => $user->id
-//        ]);
-//
-//        return redirect()->route('dashboard');
-//
-//    }
 
 
 

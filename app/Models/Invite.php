@@ -16,6 +16,7 @@ class Invite extends Model
         'owner_id',
         'user_id',
         'task_id',
+        'is_accepted',
         'token'
     ];
 
